@@ -3,20 +3,24 @@ from pytube import YouTube
 from tkinter import *
 from tkinter import filedialog, ttk
 import wget
+from pathlib import Path
 
+# download Button Functionality
 screen = Tk()
-title = screen.title("YouTube Download")
+screen.title("YouTube Download")
+screen.iconbitmap(r"C:\Users\sahil\Desktop\apps\Projects\YoutubeVideo_downloader\youtube_downloader.ico")
 canvas = Canvas(screen, width=600, height=500)
 canvas.pack()
 
-
+path = str(Path.home() / "Downloads")
 # Functions
+
+
 def select_path():
     # to select path from the explore
-    global path 
+    global path
     path = filedialog.askdirectory()
-    if path == None:
-        path = r'C:\Users\sahil\Downloads'
+    # print(path)
     path_label.config(text=path)
 
 
@@ -55,16 +59,15 @@ def quality(qualitys):
 
 def download_file():
     youtube = YouTube(link_field.get())
-    print(format_of_item.get())
     link_label.config(
-            text=f"Downloading Your Stuff. Please Wait!", fg='#5ec7f7')
+        text=f"Downloading Your Stuff. Please Wait!", fg='#5ec7f7')
     if choose.get().lower() == 'video':
         # print('videos')
         Videos = youtube.streams.filter(
             mime_type='video/mp4', progressive=True)
         Videos.filter(res=format_of_item.get()).first().download(
             output_path=path)
-        
+
     elif choose.get().lower() == 'audio':
         # print('videos')
         Audios = youtube.streams.filter(only_audio=True, mime_type='audio/mp4')
@@ -75,9 +78,12 @@ def download_file():
         # print('thumbnail')
         url = youtube.thumbnail_url
         wget.download(url, r'C:\Users\sahil\Downloads')
-    
+
+    link_field.delete(0, END)
+    combobox.set('Select')
+
     link_label.config(
-            text=f"Downloading Completed", fg='#22d41c')
+        text=r"Downloading Completed \(U+1F44D)", fg='#22d41c')
 
 
 def done():
@@ -100,7 +106,7 @@ canvas.create_image(300, 80, image=logo_img)
 # link field
 link_label = Label(screen, text=" Enter Youtube link: ", font=('Roboto', 12))
 link_field = Entry(screen, width=70, text="Type or Past your link here")
-link_field.place(width=150, height=50)
+link_field.pack(padx=100, pady=100)
 
 quality_label = Label(
     screen, text="Select the quality for the Video: ", font=('Roboto', 12))
@@ -124,6 +130,7 @@ download_btn = Button(screen, text="Download", width=20, height=2, font=(
 # Combobox with demo qualitys
 combobox = ttk.Combobox(width=15, state='readonly')
 combobox['values'] = ('1080p', '720p', '480p', '360p', '240p', '144p')
+combobox.set('Select')
 
 # choise by radiobutton
 choose = tkinter.StringVar()
