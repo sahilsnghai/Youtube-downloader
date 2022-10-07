@@ -1,0 +1,1 @@
+choose.get().lower() == 'thumbnail'
