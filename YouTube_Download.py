@@ -1,5 +1,7 @@
+from posixpath import abspath
 import threading
-import tkinter
+import tkinter,os
+from pyparsing import Regex
 from pytube import YouTube
 from tkinter import *
 from tkinter import filedialog, ttk
@@ -8,9 +10,8 @@ from pathlib import Path
 
 # download Button Functionality
 screen = Tk()
-screen.title("YouTube Download")
-screen.wm_iconbitmap(
-    r"C:\Users\sahil\Desktop\apps\Projects\YoutubeVideo_downloader\youtube_downloader.ico")
+screen.title("YouTube Downloader")
+screen.wm_iconbitmap(os.getcwd() + '\youtube_downloader.ico')
 canvas = Canvas(screen, width=600, height=500)
 canvas.pack()
 
@@ -80,7 +81,7 @@ def download_file():
     elif choose.get().lower() == 'thumbnail':
         # print('thumbnail')
         url = youtube.thumbnail_url
-        wget.download(url, r'C:\Users\sahil\Downloads')
+        wget.download(url, path)
 
     link_field.delete(0, END)
     combobox.set('Select')
@@ -92,18 +93,19 @@ def download_file():
 
 
 def done():
-    choice = choose.get().lower()
-    youtube = YouTube(link_field.get())
+    try:
+        choice = choose.get().lower()
+        youtube = YouTube(link_field.get())
 
-    if choice == 'video':
-        video(youtube)
-    elif choice == 'audio':
-        audio(youtube)
-    elif choice == 'thumbnail':
-        pass
-    elif choice == '':
-        link_label.config(text="Please Choose any option!:: ", fg='red')
-    else:
+        if choice == 'video':
+            video(youtube)
+        elif choice == 'audio':
+            audio(youtube)
+        elif choice == 'thumbnail':
+            pass
+    except ValueError:
+        link_label.config(text="Please Choose any option!: ", fg='red')
+    except:
         link_label.config(text="Please Enter Link below!: ", fg='red')
 
 
