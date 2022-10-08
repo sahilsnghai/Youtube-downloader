@@ -1,3 +1,6 @@
-__pycache__
-tempCodeRunnerFile.py
-tempCodeRunnerFile.python
+build
+dist
+commands.txt
+tcl86t.dll
+tk86t.dll
+setup.py
