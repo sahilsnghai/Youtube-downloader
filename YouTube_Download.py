@@ -1,7 +1,5 @@
-from posixpath import abspath
 import threading
 import tkinter,os
-from pyparsing import Regex
 from pytube import YouTube
 from tkinter import *
 from tkinter import filedialog, ttk
@@ -108,6 +106,8 @@ def done():
     except:
         link_label.config(text="Please Enter Link below!: ", fg='red')
 
+def temp_text(e):
+    link_field.delete(0,'end')
 
 def thread():
     thred = threading.Thread(target=done)
@@ -125,8 +125,9 @@ canvas.create_image(300, 80, image=logo_img)
 
 # link field
 link_label = Label(screen, text=" Enter Youtube link: ", font=('Roboto', 12))
-link_field = Entry(screen, width=70, text="Type or Past your link here")
-link_field.pack(padx=100, pady=100)
+link_field = Entry(screen, width=70)
+link_field.insert(0,"Type or Past your link here")
+link_field.pack(pady=20)
 
 quality_label = Label(
     screen, text="Select the quality for the Video: ", font=('Roboto', 12))
@@ -160,6 +161,9 @@ choice_radio2 = ttk.Radiobutton(
     screen, text="Audio", value='Audio', variable=choose)
 choice_radio3 = ttk.Radiobutton(
     screen, text="Thumbnail", value='Thumbnail', variable=choose)
+
+# Bindind link_field with mouse
+link_field.bind("<FocusIn>",temp_text)
 
 # Add to window
 canvas.create_window(300, 270, window=done_btn)
