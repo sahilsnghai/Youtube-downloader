@@ -27,7 +27,7 @@ elif choice.lower() == 'Audio'.lower():
         print('quality: ',qualitys)
         print(audio)
         # print(str(audio))
-    abr = input("Quality: ")
+    abr = input("level: ")
     aa= Audios.filter(abr=abr).first().download()
     # print(aa)
     print("Successfully Downloaded")

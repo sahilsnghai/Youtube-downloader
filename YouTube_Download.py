@@ -1,9 +1,9 @@
+import wget
 import threading
 import tkinter,os
-from pytube import YouTube
 from tkinter import *
+from pytube import YouTube
 from tkinter import filedialog, ttk
-import wget
 from pathlib import Path
 
 # download Button Functionality
