@@ -2,7 +2,7 @@ import wget
 import threading
 import tkinter,os
 from tkinter import *
-from pytube import YouTube
+from pytubefix import YouTube
 from tkinter import filedialog, ttk
 from pathlib import Path
 
@@ -25,16 +25,19 @@ def select_path():
     path_label.config(text=path)
 
 
-def video(youtube):
-    Videos = youtube.streams.filter(mime_type='video/mp4', progressive=True)
-    qualitys = list()
-    for video in Videos:
-        pos = str(video).find('res=\"')
-        first_quote = str(video).find('\"', pos)
-        second_quote = str(video).find('\"', first_quote+1)
-        qualitys.append(str(video)[first_quote+1:second_quote])
-        # print(video)
-    quality(qualitys)
+def video(youtube: YouTube):
+    try:
+        Videos = youtube.streams.filter(mime_type='video/mp4', progressive=True)
+        qualitys = list()
+        for video in Videos:
+            pos = str(video).find('res=\"')
+            first_quote = str(video).find('\"', pos)
+            second_quote = str(video).find('\"', first_quote+1)
+            qualitys.append(str(video)[first_quote+1:second_quote])
+            # print(video)
+        quality(qualitys)
+    except Exception as e:
+        print(f"Got exc {e}")
 
 
 def audio(youtube):
@@ -89,11 +92,14 @@ def download_file():
     link_label.config(
         text=r"Downloading Completed!", fg='#22d41c')
 
-
 def done():
     try:
+        _link = str(link_field.get())
         choice = choose.get().lower()
-        youtube = YouTube(link_field.get())
+        try:
+            youtube = YouTube(_link)
+        except Exception as e:
+            print(f"Connection error {e}")
 
         if choice == 'video':
             video(youtube)
@@ -110,13 +116,11 @@ def temp_text(e):
     link_field.delete(0,'end')
 
 def thread():
-    thred = threading.Thread(target=done)
-    thred.start()
+    thred = threading.Thread(target=done, daemon=True).start()
 
 
 def thread1():
-    thred = threading.Thread(target=download_file)
-    thred.start()
+    thred = threading.Thread(target=download_file).start()
 
 
 # image logo

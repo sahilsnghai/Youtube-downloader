@@ -5,3 +5,10 @@ tcl86t.dll
 tk86t.dll
 setup.py
 tempCodeRunnerFile.py
+playlist.py
+
+.venv/
+
+__pycache__/YouTube_Download.cpython-39.pyc
+
+*.pyc

@@ -1,7 +1,8 @@
-from pytube import YouTube
+from pytubefix import YouTube
 
 link = input("Link: ")
 youtube = YouTube(link)
+path = input("Path: ")
 
 choice = input("Audio/Video: ")
 if choice.lower() =='Video'.lower():
@@ -15,7 +16,7 @@ if choice.lower() =='Video'.lower():
         print(video)
         # print(str(video))
     res = input("Quality: ")
-    Videos.filter(res=res).first().download()# r'C:\Users\sahil'
+    Videos.filter(res=res).first().download(output_path=path)# r'C:\Users\sahil'
     print("Successfully Downloaded")
 elif choice.lower() == 'Audio'.lower():
     Audios = youtube.streams.filter(only_audio=True,mime_type='audio/mp4')
@@ -28,7 +29,7 @@ elif choice.lower() == 'Audio'.lower():
         print(audio)
         # print(str(audio))
     abr = input("level: ")
-    aa= Audios.filter(abr=abr).first().download()
+    aa= Audios.filter(abr=abr).first().download(output_path=path)
     # print(aa)
     print("Successfully Downloaded")
 
